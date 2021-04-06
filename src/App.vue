@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Uppsala Covid-19 positivity per postal code</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
