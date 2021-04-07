@@ -1,5 +1,5 @@
 <template>
-  <div class="chartwrapper">
+  <div class="page-wrapper">
     <div class="chart-wrapper">
       <div class="chart">
         <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{'width' : area.pop/160+'px'}" :key="key">
@@ -91,8 +91,8 @@ a {
   border-bottom: 1px solid white;
 }
 
-.chartwrapper {
+.page-wrapper {
   display: grid;
-  grid-template-rows: 700px 200px;
+  grid-template-rows: 650px 250px;
 }
 </style>

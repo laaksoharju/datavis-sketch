@@ -1,14 +1,22 @@
 <template>
-  <div class="wrapper">
-    {{postcode}}
-    <svg :viewBox="viewBox">
-      <g transform="translate(30, 10)" id="chart">
-          <path
-            class="line-chart-line"
-            :d="points"
-          />
-      </g>
-    </svg>
+  <div class="outer-wrapper">
+    <div class="line-chart-wrapper">
+      Test positivity over time for postal code {{postcode?postcode:'&lt;click in the chart above to choose&gt;'}}
+      <svg :viewBox="viewBox">
+        <g id="grid-y" transform="translate(30,10)">
+        </g>
+        <g class="axis" id="axis-x" transform="translate(30,200)">
+        </g>
+        <g class="axis" id="axis-y" transform="translate(30,10)">
+        </g>
+        <g transform="translate(30, 10)" id="chart">
+            <path
+              class="line-chart-line"
+              :d="points"
+            />
+        </g>
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -28,13 +36,20 @@ export default {
       height: 220,
       padding: 30,
       points: {},
+      xScale: null,
+      yScale: null,
+      transitionDuration: 1000
     }
   }, 
   watch: {
     data: function (newVals) {
-      const vm = this;
-      console.log(this.line)
-      TweenLite.to(this.$data, 1, {points: vm.drawLine(newVals)})
+      this.xScale = d3.scaleLinear()
+                      .domain(d3.extent(newVals, (d, i) => i))
+                      .range(this.rangeX)
+      this.yScale = d3.scaleLinear()
+                      .domain([0, d3.max(newVals, d => d)])
+                      .range(this.rangeY)
+      TweenLite.to(this.$data, this.transitionDuration/1000, {points: this.drawGraph(newVals)})
     }
   },
   computed: {
@@ -51,36 +66,57 @@ export default {
     }
   },
   methods: {
-    drawLine: function(data) {
-      //console.log(this.path(data));
+    drawGraph: function(data) {
+      d3.select("#grid-y")
+        .call(d3.axisLeft(this.yScale).ticks(5).tickSize(-this.width).tickFormat(""));
+      d3.select("#axis-x")
+        .transition()
+        .duration(this.transitionDuration)
+        .call(d3.axisBottom(this.xScale).tickFormat(d => "w " + (+(d+25)%53+1)));
+      d3.select("#axis-y")
+        .transition()
+        .duration(this.transitionDuration)
+        .call(d3.axisLeft(this.yScale).ticks(5).tickFormat(d => d*100+"%"));
       return this.path()(data);
     },
     path: function() {
-      const x = d3.scaleLinear().domain([26,65]).range(this.rangeX);
-      const y = d3.scaleLinear().domain([0,d3.max(this.data)*100]).range(this.rangeY);
-      d3.select("#chart").append("g").attr("transform", "translate(0,190)").call(d3.axisBottom().scale(x));
-      d3.select("#chart").append("g").attr("transform", "translate(0,0)").call(d3.axisLeft().scale(y));
-      x.domain(d3.extent(this.data, (d, i) => i));
-      y.domain([0, d3.max(this.data, d => d)]);
       return d3.line()
-        .x((d, i) => x(i))
-        .y(d => y(d));
+        .x((d, i) => this.xScale(i))
+        .y(d => this.yScale(d));
     },
   }
 }
 </script>
-<style scoped>
+<style>
 
-.wrapper {
-  background-color: lightgray
+.outer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.line-chart-wrapper {
+  background-color: gainsboro;
+  max-width: 1500px;
+  padding: 0 10px;
 }
 .line-chart-line {
     transition: 1s;
     fill: none;
-    stroke: #76BF8A;
+    stroke: firebrick;
     stroke-width: 3px;
 }
 .values-move {
   transition: transform 1s;
 }
+
+#grid-y line {
+  stroke: darkgray;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+#grid-y path {
+  stroke-width: 0;
+}
+
 </style>
