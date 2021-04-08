@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <div class="chart-wrapper">
       <div class="chart">
-        <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{'width' : area.pop/160+'px'}" :key="key">
+        <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{height : colHeight+'px', width : area.pop/160+'px'}" :key="key">
           <div v-for="(row, index) in area.tests" :title="key + ', ' + row.week + ', ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
           </div>
         </div>
@@ -28,6 +28,11 @@ export default {
   data: function () {
     return {
       currentLine: null
+    }
+  },
+  computed: {
+    colHeight: function () {
+      return this.data[Object.keys(this.data)[0]].tests.length*15+10;
     }
   },
   methods: {
@@ -80,8 +85,7 @@ a {
 }
 .row {
   display: inline-grid;
-  grid-template-rows: repeat(auto-fill, 1em);
-  height: 1000px;
+  grid-template-rows: repeat(auto-fill, 15px);
   overflow: hidden;
   cursor: pointer;
   border-top:10px solid white;
@@ -107,6 +111,6 @@ a {
 
 .page-wrapper {
   display: grid;
-  grid-template-rows: 660px 250px;
+  grid-template-rows: auto 250px;
 }
 </style>
