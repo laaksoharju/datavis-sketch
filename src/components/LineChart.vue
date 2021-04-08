@@ -97,6 +97,7 @@ export default {
 .line-chart-wrapper {
   background-color: gainsboro;
   max-width: 1500px;
+  width:100%;
   padding: 0 10px;
 }
 .line-chart-line {
