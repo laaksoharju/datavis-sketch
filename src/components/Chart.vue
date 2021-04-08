@@ -3,7 +3,7 @@
     <div class="chart-wrapper">
       <div class="chart">
         <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{'width' : area.pop/160+'px'}" :key="key">
-          <div v-for="(row, index) in area.tests" :title="key + ', ' + row.week + ', ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :key="index">   
+          <div v-for="(row, index) in area.tests" :title="key + ', ' + row.week + ', ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
           </div>
         </div>
       </div>
@@ -84,6 +84,7 @@ a {
   height: 1000px;
   overflow: hidden;
   cursor: pointer;
+  border-top:10px solid white;
 }
 .row div {
   overflow: hidden;
@@ -91,8 +92,21 @@ a {
   border-bottom: 1px solid white;
 }
 
+.highlight {
+  border-left: 1px solid black;
+  border-right: 1px solid black !important;
+}
+
+.highlight:first-child {
+  border-top: 1px solid black;
+}
+
+.highlight:last-child {
+  border-bottom: 1px solid black;
+}
+
 .page-wrapper {
   display: grid;
-  grid-template-rows: 650px 250px;
+  grid-template-rows: 660px 250px;
 }
 </style>
