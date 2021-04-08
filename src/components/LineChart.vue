@@ -68,6 +68,8 @@ export default {
   methods: {
     drawGraph: function(data) {
       d3.select("#grid-y")
+        .transition()
+        .duration(this.transitionDuration)
         .call(d3.axisLeft(this.yScale).ticks(5).tickSize(-this.width).tickFormat(""));
       d3.select("#axis-x")
         .transition()
