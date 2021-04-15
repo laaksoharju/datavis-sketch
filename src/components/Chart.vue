@@ -2,13 +2,13 @@
   <div class="page-wrapper">
     <div class="chart-wrapper">
       <div class="chart">
-        <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{height : colHeight+'px', width : area.pop/160+'px'}" :key="key">
-          <div v-for="(row, index) in area.tests" :title="'week ' + row.week + '\narea: ' + key + '\npopulation:' + area.pop + '\npositivity: ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
+        <div class="row" v-for="(area, key) in data" @click="setCurrent(key)" :style="{height : colHeight+'px', width : area.pop/160+'px'}" :key="key">
+          <div v-for="(row, index) in area.tests" :title="'' + (key.substring(0,3)) + ' ' + (key.substring(3)) + '\npop: ' + area.pop + '\nweek ' + ((row.week-1)%53+1) + '\npositivity: ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
           </div>
         </div>
       </div>
     </div>
-    <LineChart :data="getLineData()" :postcode="currentLine"/>
+    <LineChart :data="getLineData()" :postcode="currentLine" :population="currentPopulation"/>
   </div>
 </template>
 
@@ -27,7 +27,8 @@ export default {
   },
   data: function () {
     return {
-      currentLine: null
+      currentLine: null,
+      currentPopulation: null,
     }
   },
   computed: {
@@ -58,8 +59,9 @@ export default {
       // return "firebrick"
 
     },
-    setCurrentLine: function(pnr) {
+    setCurrent: function(pnr) {
       this.currentLine = pnr;
+      this.currentPopulation = this.data[pnr].pop;
     },
     getLineData: function () {
       if (this.currentLine != null)

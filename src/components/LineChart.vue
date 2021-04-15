@@ -1,11 +1,11 @@
 <template>
   <div class="outer-wrapper">
     <div class="line-chart-wrapper">
-      Test positivity over time for postal code {{postcode?postcode:'&lt;click in the chart above to choose&gt;'}}
+      Test positivity over time for postal code {{postcode?postcode.substring(0,3) + " " + postcode.substring(3) + " with " + population + " citizens.":'&lt;click in the chart above to choose&gt;'}}
       <svg :viewBox="viewBox">
         <g id="grid-y" transform="translate(30,10)">
         </g>
-        <g class="axis" id="axis-x" transform="translate(30,200)">
+        <g class="axis" id="axis-x" transform="translate(30,190)">
         </g>
         <g class="axis" id="axis-y" transform="translate(30,10)">
         </g>
@@ -28,7 +28,8 @@ export default {
   name: 'LineChart',
   props: {
     data: Array,
-    postcode: String
+    postcode: String,
+    population: Number
   },
   data: function () {
     return {
@@ -70,7 +71,7 @@ export default {
       d3.select("#grid-y")
         .transition()
         .duration(this.transitionDuration)
-        .call(d3.axisLeft(this.yScale).ticks(5).tickSize(-this.width).tickFormat(""));
+        .call(d3.axisLeft(this.yScale).ticks(5).tickSize(-this.width+this.padding).tickFormat(""));
       d3.select("#axis-x")
         .transition()
         .duration(this.transitionDuration)
