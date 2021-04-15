@@ -2,7 +2,7 @@
 
 const request = require('request');
 const csv = require("csvtojson");
-const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKk0_a1zf3YXbPHCKN7DLupzCbE1IdcixXP-eFVBUHUlHg-X23DONOXXFJm56tALNnW9m3bmc1H1fR/pub?gid=0&single=true&output=csv";
+const csvURL = "https://blobserver.dckube.scilifelab.se/blob/CRUSH_Covid_data.csv";//"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKk0_a1zf3YXbPHCKN7DLupzCbE1IdcixXP-eFVBUHUlHg-X23DONOXXFJm56tALNnW9m3bmc1H1fR/pub?gid=0&single=true&output=csv";
 
 // Store data in an object to keep the global namespace clean
 function Data() {
