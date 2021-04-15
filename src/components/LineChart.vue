@@ -34,7 +34,7 @@ export default {
     return {
       width: 1500,
       height: 220,
-      padding: 30,
+      padding: 40,
       points: {},
       xScale: null,
       yScale: null,

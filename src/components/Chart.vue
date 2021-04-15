@@ -3,7 +3,7 @@
     <div class="chart-wrapper">
       <div class="chart">
         <div class="row" v-for="(area, key) in data" @click="setCurrentLine(key)" :style="{height : colHeight+'px', width : area.pop/160+'px'}" :key="key">
-          <div v-for="(row, index) in area.tests" :title="key + ', ' + row.week + ', ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
+          <div v-for="(row, index) in area.tests" :title="'week ' + row.week + '\narea: ' + key + '\npopulation:' + area.pop + '\npositivity: ' + (row.pos*100).toFixed(1) + '%'" :style="{'background-color': colorScale(row.pos)}" :class="{'highlight': currentLine === key }" :key="index">   
           </div>
         </div>
       </div>

@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <p>
+      In the chart, each column is a postal code area and each row is a week. Click on a column to view a line graph of postal code area. Scroll to the right in the heatmap for more postal code areas.
+    </p>
     <Chart :data="data"/>
   </div>
 </template>
@@ -36,3 +39,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+  p {
+    width: 90%;
+    max-width: 40em;
+    margin: auto;
+    text-align: left;
+  }
+</style>
